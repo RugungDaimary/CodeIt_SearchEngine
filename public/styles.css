@@ -136,6 +136,7 @@ body {
   background: #65686b;
   border-radius: 10px;
   display: grid;
+  margin-left: auto;
   justify-content: center;
   width: 300px;
   align-items: center;
@@ -164,7 +165,7 @@ body {
 }
 .header-laptop-5 {
   grid-area: d;
-  background: #b4adea;
+  background: #be8ee5;
   border: 3px solid #fffbfe;
   border-radius: 10px;
   padding: 10px;

@@ -18,3 +18,4 @@ for (let k = 0; k < temp.length; k++) {
 }
 
 module.exports = tfidf;
+
