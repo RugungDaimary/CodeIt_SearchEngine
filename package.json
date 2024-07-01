@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemond app.js"
+    "dev": "nodemon app.js"
   },
   "author": "",
   "license": "ISC",
@@ -21,8 +21,10 @@
     "stopword": "^2.0.2",
     "string-similarity": "^4.0.4",
     "validator": "^13.7.0",
-    "vercel": "^34.2.7",
     "wink-lemmatizer": "^3.0.2",
     "words-to-numbers": "^1.5.1"
+  },
+  "devDependencies": {
+    "vercel": "^34.2.8"
   }
 }
