@@ -7,7 +7,8 @@
     "start": "node app.js",
     "dev": "nodemon app.js",
     "build": "npm install --production && npm prune --production && npm run cleanup",
-    "cleanup": "rm -rf node_modules/.cache && rm -rf .vercel"
+    "cleanup": "rm -rf node_modules/.cache && rm -rf .vercel",
+    "vercel-build": "npm run build"
   },
   "author": "",
   "license": "ISC",
