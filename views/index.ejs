@@ -15,6 +15,7 @@
 </head>
 
 <body>
+  <!-- when the viewport is small -->
   <section class="header">
     <div class="header-container">
       <div class="header-text">
@@ -22,7 +23,7 @@
           <h1>Code</h1>
         </div>
         <div class="header-text-2">
-          <h1>it.</h1>
+          <!-- <h1></h1> -->
         </div>
       </div>
       <div class="header-logo"></div>
@@ -52,7 +53,7 @@
       </div>
       <div class="header-laptop-5">
         <div class="header-laptop-5-container">
-          <h1>Search it</h1>
+          <h2>Search</h2>
         </div>
       </div>
       <div class="header-laptop-6"></div>
@@ -192,15 +193,10 @@
     const form = document.querySelector("form");
     const questionElement = form.question;
     const resultSection = document.querySelector(".results");
-
     const loadingSection = document.querySelector(".loading-div");
-
     const questionLinks = document.querySelectorAll(".title");
     const questionText = document.querySelectorAll(".body");
-
     const noResultsDiv = document.querySelector(".no-results");
-    // console.log(questionLinks);
-    // console.log(questionText);
     form.addEventListener("submit", async (e) => {
       e.preventDefault();
 
@@ -221,7 +217,6 @@
 
         loadingSection.style.display = "none";
 
-        // console.log(res);
 
         if (data.length === 0) {
           noResultsDiv.style.display = "block";
@@ -236,8 +231,6 @@
             questionText[i].querySelector("p").innerHTML = data[i].problem;
           }
         }
-
-        // console.log(data);
       } catch (error) {
         alert(error);
       }

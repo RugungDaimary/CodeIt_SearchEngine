@@ -17,22 +17,23 @@
     crossorigin="anonymous" referrerpolicy="no-referrer" />
 
   <link rel="shortcut icon" href="/search-code-svgrepo-com.svg" type="image/x-icon" />
-
   <link rel="stylesheet" href="/styles.css" />
 </head>
 
 <body>
+  <!-- when the viewport is small -->
   <section class="header">
     <div class="header-container">
       <div class="header-text">
         <div class="header-text-1">
           <h1>Code</h1>
         </div>
-        <div class="header-text-2">
+        <!-- <div class="header-text-2">
           <h1>it.</h1>
-        </div>
+        </div> -->
       </div>
       <div class="header-logo"></div>
+      <!-- <div class="header-logo" style="margin-bottom: 70px;"></div> -->
     </div>
   </section>
 
@@ -57,14 +58,14 @@
         <div class="header-laptop-6-container">
           <div class="header-laptop-1-1">Code</div>
           <!-- <div class="header-laptop-1-2"> -->
-            <!-- <div>it.</div> -->
-            <!-- <div class="header-laptop-logo"></div> -->
+          <!-- <div>it.</div> -->
+          <!-- <div class="header-laptop-logo"></div> -->
           <!-- </div> -->
         </div>
       </div>
       <div class="header-laptop-5">
         <div class="header-laptop-5-container">
-          <h1>Search it.</h1>
+          <h1>Search</h1>
         </div>
       </div>
       <div class="header-laptop-6"></div>
@@ -86,6 +87,7 @@
         <%= questionObject.type %>
       </a></small>
     <p class="question-body"><%- questionObject.value %></p>
+    <!-- <%= questionObject.value.replace('Example :', '<span style="color: red; font-weight: bold;">Example :</span>' ) %> -->
   </section>
 
   <section class="footer">
@@ -140,4 +142,4 @@
     loop: true,
     cursorChar: "_",
   });
-</script> 
+</script>

@@ -2,9 +2,28 @@
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+
 }
 
+
+.full-viewport {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 2rem;
+  color: #fffbfe;
+  background-color: #333;
+  /* Just for visual distinction */
+}
+
+html,
 body {
+  height: 100%;
+  width: 100%;
+
+
   background: #2f3537;
   font-family: "Poppins", sans-serif;
   overflow-x: hidden;
@@ -16,7 +35,7 @@ body {
   margin-left: auto;
   margin-right: auto;
   /* background: red; */
-  padding: 20px;
+  padding: 30px;
   padding-bottom: 0;
   display: none;
 }
@@ -44,6 +63,8 @@ body {
 
 .header-logo {
   background: green;
+  margin-bottom: 70px;
+  /* font-weight: bold; */
 }
 
 .header-text-1 {
@@ -64,6 +85,7 @@ body {
   .header-text-1 {
     font-size: 3rem;
   }
+
   .header-text-2 {
     font-size: 3rem;
   }
@@ -131,6 +153,7 @@ body {
   background-size: contain;
   background-position: center;
 }
+
 .header-laptop-2 {
   grid-area: b;
   background: #65686b;
@@ -163,6 +186,7 @@ body {
   font-size: 5rem;
   color: #ffb0ac;
 }
+
 .header-laptop-5 {
   grid-area: d;
   background: #be8ee5;
@@ -178,11 +202,12 @@ body {
 
 .header-laptop-5-container {
   display: grid;
+
   height: 100%;
   width: 60%;
   margin-left: auto;
   margin-right: auto;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
   font-size: 2rem;
   color: #fffbfe;
@@ -280,6 +305,7 @@ button {
     margin-top: 2rem;
     margin-bottom: 2rem;
   }
+
   .results {
     display: grid;
     width: 100vw;
@@ -319,6 +345,7 @@ button {
     margin-top: 2rem;
     margin-bottom: 2rem;
   }
+
   .results {
     display: grid;
     width: 100vw;
