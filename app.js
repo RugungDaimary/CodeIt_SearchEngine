@@ -62,7 +62,6 @@ const W = 27523;
 //average length of a document
 const avgdl = 134.16969897452861;
 
-
 // Function to capitalize the string
 Object.defineProperty(String.prototype, "capitalize", {
   value: function () {
