@@ -84,6 +84,7 @@ app.get("/", (req, res) => {
   res.render("index");
 });
 
+
 // GET Route to perform our search
 app.get("/search", (req, res) => {
   const query = req.query.query;
