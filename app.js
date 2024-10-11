@@ -18,7 +18,7 @@ const removePunc = require("remove-punctuation");
 // Module for spell-check
 const natural = require("natural");
 
-// Module to remove grammer (add / adding == add)
+// Module to remove grammer (run / running == run)
 const lemmatizer = require("wink-lemmatizer");
 
 // Module to convert number to words
@@ -83,7 +83,6 @@ const spellcheck = new natural.Spellcheck(keywords);
 app.get("/", (req, res) => {
   res.render("index");
 });
-
 
 // GET Route to perform our search
 app.get("/search", (req, res) => {
