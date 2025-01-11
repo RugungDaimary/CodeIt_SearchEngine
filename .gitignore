@@ -1,9 +1,28 @@
-
 # dependencies
 /node_modules
 
 # misc
 .DS_Store
 .env
-# .vercel
+
+# Vercel
 .vercel
+
+# Logs
+logs
+*.log
+npm-debug.log*
+
+# Optional eslint cache
+.eslintcache
+
+# Optional stylelint cache
+.stylelintcache
+
+# Build output
+/dist
+/build
+
+# Temporary files
+tmp
+temp

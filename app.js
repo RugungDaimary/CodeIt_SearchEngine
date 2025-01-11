@@ -1,6 +1,5 @@
+//Run the app=> node app.js
 const express = require("express");
-const serverless = require("serverless-http"); // Import serverless-http
-
 // Starting the Server
 const app = express();
 
@@ -19,7 +18,7 @@ const removePunc = require("remove-punctuation");
 // Module for spell-check
 const natural = require("natural");
 
-// Module to remove grammar (run / running == run)
+// Module to remove grammer (run / running == run)
 const lemmatizer = require("wink-lemmatizer");
 
 // Module to convert number to words
@@ -36,7 +35,7 @@ const stringSimilarity = require("string-similarity");
 const { wordsToNumbers } = require("words-to-numbers");
 
 // Reading the documents
-// Importing the IDF Array
+//Importing the IDF Array
 const IDF = require("./src/idf");
 
 // Reading the keywords array
@@ -45,7 +44,7 @@ const keywords = require("./src/keywords");
 // Reading the length array
 const length = require("./src/length");
 
-// Reading the TF Array
+//Reading the TF Array
 let TF = require("./src/TF");
 
 // Reading the titles array
@@ -54,13 +53,13 @@ const titles = require("./src/titles");
 // Reading the urls array
 const urls = require("./src/urls");
 
-// total documents
+//total documents
 const N = 3023;
 
-// total keywords
+//total keywords
 const W = 27523;
 
-// average length of a document
+//average length of a document
 const avgdl = 134.16969897452861;
 
 // Function to capitalize the string
@@ -74,11 +73,8 @@ Object.defineProperty(String.prototype, "capitalize", {
 // Setting EJS as our view engine
 app.set("view engine", "ejs");
 
-// Path to our Views Folder
-app.set("views", path.join(__dirname, "views"));
-
 // Path to our Public Assets Folder
-app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "/public")));
 
 // Making a dictionary with all our keywords
 const spellcheck = new natural.Spellcheck(keywords);
@@ -97,16 +93,16 @@ app.get("/search", (req, res) => {
 
   let queryKeywords = [];
 
-  // Separates numbers from query string using regular expression - regex
+  // Seperates numbers from query string using regular expression - regex
   let getNum = query.match(/\d+/g);
 
-  // Push all the numbers and their word form to query keywords
+  //Push all the numbers and their word form to query keywords
   if (getNum) {
     getNum.forEach((num) => {
       queryKeywords.push(num);
       let numStr = converter.toWords(Number(num));
       let numKeys = numStr.split("-");
-      queryKeywords.push(numStr); // two-hundred-thirty-four
+      queryKeywords.push(numStr); // two-hundered-thirty-four
 
       numKeys.forEach((key) => {
         let spaceSplits = key.split(" ");
@@ -119,11 +115,16 @@ app.get("/search", (req, res) => {
     });
   }
 
+  // twoSum => two sum
+
+  // twojnjgk
+  // 2
+
   for (let j = 0; j < newString.length; j++) {
     // Original Keywords
     newString[j] = newString[j].toLowerCase();
     newString[j] = removePunc(newString[j]);
-    if (newString[j] !== "") queryKeywords.push(newString[j]);
+    if (newString[j] !== "") queryKeywords.push(newString[j]); // , !
 
     // Camelcasing
     var letr = newString[j].match(/[a-zA-Z]+/g);
@@ -133,12 +134,13 @@ app.get("/search", (req, res) => {
       });
     }
 
-    // Word to Numbers
+    //Word to Numbers
     let x = wordsToNumbers(newString[j]).toString();
     if (x != newString[j]) queryKeywords.push(x);
   }
 
-  // Grammar and Spell Check
+  // Grammer and Spell Check
+
   let queryKeywordsNew = queryKeywords;
   queryKeywords.forEach((key) => {
     let key1 = key;
@@ -178,7 +180,7 @@ app.get("/search", (req, res) => {
   queryKeywords = temp;
   queryKeywords.sort();
 
-  // Getting Unique Query Keyword
+  //Getting Unique Query Keyword
   let temp1 = [];
   queryKeywords.forEach((key) => {
     if (temp1.indexOf(key) == -1) {
@@ -188,7 +190,7 @@ app.get("/search", (req, res) => {
 
   queryKeywords = temp1;
 
-  // Getting id of every query keyword
+  //Getting id of every query keyword
   let qid = [];
   queryKeywords.forEach((key) => {
     qid.push(keywords.indexOf(key));
@@ -209,6 +211,7 @@ app.get("/search", (req, res) => {
       for (let k = 0; k < TF[i].length; k++) {
         if (TF[i][k].id == key) {
           tf = TF[i][k].val / length[i];
+
           break;
         }
       }
@@ -217,7 +220,7 @@ app.get("/search", (req, res) => {
       const y = tfkey + 1.2 * (1 - 0.75 + 0.75 * (length[i] / avgdl));
       let BM25 = (x / y) * idfKey; // x/y is the tf part
 
-      // Giving Higher weightage to Leetcode and Interview bit Problems
+      //Giving Higher weightage to Leetcode and Interview bit Problems
       if (i < 2214) BM25 *= 2;
       s += BM25;
     });
@@ -232,7 +235,7 @@ app.get("/search", (req, res) => {
     arr.push({ id: i, sim: s });
   }
 
-  // Sorting According to Score
+  //Sorting According to Score
   arr.sort((a, b) => b.sim - a.sim);
 
   let response = [];
@@ -242,27 +245,29 @@ app.get("/search", (req, res) => {
     if (arr[i].sim != 0) nonZero++;
     const str = path.join(__dirname, "Problems");
     const str1 = path.join(str, `problem_text_${arr[i].id + 1}.txt`);
-    let question = fs.readFileSync(str1).toString().split("\n");
-    let n = question.length;
-    let problem = "";
+    if (fs.existsSync(str1)) {
+      let question = fs.readFileSync(str1).toString().split("\n");
+      let n = question.length;
+      let problem = "";
 
-    if (arr[i].id <= 1773) {
-      problem = question[0].split("ListShare")[1] + " ";
-      if (n > 1) problem += question[1];
-    } else {
-      problem = question[0] + " ";
-      if (n > 1) problem += question[1];
+      if (arr[i].id <= 1773) {
+        problem = question[0].split("ListShare")[1] + " ";
+        if (n > 1) problem += question[1];
+      } else {
+        problem = question[0] + " ";
+        if (n > 1) problem += question[1];
+      }
+      response.push({
+        id: arr[i].id,
+        title: titles[arr[i].id],
+        problem: problem,
+      });
     }
-    response.push({
-      id: arr[i].id,
-      title: titles[arr[i].id],
-      problem: problem,
-    });
   }
 
   console.log("RESPONSE", JSON.stringify(response));
 
-  // res.locals.titles = response;
+  //res.locals.titles = response;
   setTimeout(() => {
     if (nonZero) res.json(response);
     else res.json([]);
@@ -270,62 +275,75 @@ app.get("/search", (req, res) => {
 });
 
 // GET route to question page
+
 app.get("/question/:id", (req, res) => {
   const id = Number(req.params.id);
   const str = path.join(__dirname, "Problems");
   const str1 = path.join(str, `problem_text_${id + 1}.txt`);
+  if (fs.existsSync(str1)) {
+    let text = fs.readFileSync(str1).toString();
+    // console.log(text);
+    if (id <= 1773) {
+      text = text.split("ListShare");
+      text = text[1];
+    }
 
-  if (!fs.existsSync(str1)) {
-    return res.status(404).send("File not found");
+    var find = "\n";
+    var re = new RegExp(find, "g");
+
+    text = text.replace(re, "<br/>");
+
+    let title = titles[id];
+    title = title.split("-");
+    let temp = "";
+    for (let i = 0; i < title.length; i++) {
+      temp += title[i] + " ";
+    }
+    title = temp;
+    title = title.capitalize();
+    let type = 0;
+    if (id < 1774) type = "Leetcode";
+    else if (id < 2214) type = "Interview Bit";
+    else type = "Techdelight";
+    const questionObject = {
+      title,
+      link: urls[id],
+      value: text,
+      type,
+    };
+
+    res.locals.questionObject = questionObject;
+
+    res.locals.questionBody = text;
+    res.locals.questionTitle = titles[id];
+    res.locals.questionUrl = urls[id];
+    res.render("question");
+  } else {
+    res.status(404).send("Question not found");
   }
-
-  let text = fs.readFileSync(str1).toString();
-  if (id <= 1773) {
-    text = text.split("ListShare");
-    text = text[1];
-  }
-
-  var find = "\n";
-  var re = new RegExp(find, "g");
-
-  text = text.replace(re, "<br/>");
-
-  let title = titles[id];
-  title = title.split("-");
-  let temp = "";
-  for (let i = 0; i < title.length; i++) {
-    temp += title[i] + " ";
-  }
-  title = temp;
-  title = title.capitalize();
-  let type = 0;
-  if (id < 1774) type = "Leetcode";
-  else if (id < 2214) type = "Interview Bit";
-  else type = "Techdelight";
-  const questionObject = {
-    title,
-    link: urls[id],
-    value: text,
-    type,
-  };
-
-  res.locals.questionObject = questionObject;
-
-  res.locals.questionBody = text;
-  res.locals.questionTitle = titles[id];
-  res.locals.questionUrl = urls[id];
-  res.render("question");
 });
 
-// Remove the server listener and export the handler
-// Listening on Port
-// const port = process.env.PORT || 4000;
-// app.use((req, res) => {
-//   res.status(404).render("404"); // Ensure you have a views/404.ejs file
-// });
-// app.listen(port, () => {
-//   console.log("Server is running on port " + port);
-// });
+// Listining on Port
 
-// Add the serverless handler export
-module.exports.handler = serverless(app);
+const port = process.env.PORT || 4000;
+
+app.listen(port, () => {
+  console.log("Server is runnning on port " + port);
+});
+
+// Binary Search Tree -> ['binary', 'search', 'tree', 'orange'] -> ['binary', 'search', 'tree']
+// Keywords -> []
+// const score = [];
+// for(const document of documents) {
+// bm25
+// score.push({id: document_id, score: bm25})
+// }
+
+// O(N*W)
+// score.sort((a, b) => {
+//  return b.score-a.score;
+// })
+
+// for(let i=0; i< 10; i++){
+// console.log(document[score[i]._id]);
+//}
