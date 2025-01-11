@@ -315,12 +315,21 @@ app.get("/question/:id", (req, res) => {
   res.render("question");
 });
 
-// Listening on Port
-const port = process.env.PORT || 4000;
-app.use((req, res) => {
-  res.status(404).render("404"); // Ensure you have a views/404.ejs file
-});
-app.listen(port, () => {
-  console.log("Server is running on port " + port);
-});
+// // Listening on Port
+// const port = process.env.PORT || 4000;
+// app.use((req, res) => {
+//   res.status(404).render("404"); // Ensure you have a views/404.ejs file
+// });
+// app.listen(port, () => {
+//   console.log("Server is running on port " + port);
+// });
+
+
+
+
+// Import serverless-http
+const serverless = require('serverless-http');
+
+// Export the app wrapped with serverless-http
+module.exports.handler = serverless(app);
 
