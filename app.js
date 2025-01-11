@@ -1,4 +1,6 @@
 const express = require("express");
+const serverless = require("serverless-http"); // Import serverless-http
+
 // Starting the Server
 const app = express();
 
@@ -315,7 +317,8 @@ app.get("/question/:id", (req, res) => {
   res.render("question");
 });
 
-// // Listening on Port
+// Remove the server listener and export the handler
+// Listening on Port
 // const port = process.env.PORT || 4000;
 // app.use((req, res) => {
 //   res.status(404).render("404"); // Ensure you have a views/404.ejs file
@@ -324,12 +327,5 @@ app.get("/question/:id", (req, res) => {
 //   console.log("Server is running on port " + port);
 // });
 
-
-
-
-// Import serverless-http
-const serverless = require('serverless-http');
-
-// Export the app wrapped with serverless-http
+// Add the serverless handler export
 module.exports.handler = serverless(app);
-
