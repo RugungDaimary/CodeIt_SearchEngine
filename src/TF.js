@@ -1,16 +1,15 @@
 const fs = require("fs");
+const path = require("path");
+
+const tfPath = path.join(__dirname, "../data/TF.txt");
 const N = 3023;
-// const W = 37641;
 let tf = new Array(N);
 
 for (let i = 0; i < N; i++) {
   tf[i] = new Array(0);
 }
 
-const TF = fs.readFileSync("TF.txt").toString();
-// fs.readFileSync("TF.txt") returns a Buffer object representing the contents of the file "TF.txt". This Buffer object is then converted to a string using .toString().
-// So, in this case, the Buffer is a temporary holding place for the binary data read from the file, before it's converted to a string
-// console.log("Printing TF array",TF);
+const TF = fs.readFileSync(tfPath, "utf8");
 const temp = TF.split("\n");
 for (let k = 0; k < temp.length; k++) {
   const arr = temp[k].split(" ");

@@ -1,5 +1,8 @@
 const fs = require("fs");
-const lengthstr = fs.readFileSync("length.txt").toString();
+const path = require("path");
+
+const lengthPath = path.join(__dirname, "../data/length.txt");
+const lengthstr = fs.readFileSync(lengthPath, "utf8");
 const length = lengthstr.split("\n");
 
 for (let i = 0; i < length.length; i++) {

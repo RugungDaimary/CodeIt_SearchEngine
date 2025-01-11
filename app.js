@@ -1,4 +1,3 @@
-//Run the app=> node app.js
 const express = require("express");
 // Starting the Server
 const app = express();
@@ -18,7 +17,7 @@ const removePunc = require("remove-punctuation");
 // Module for spell-check
 const natural = require("natural");
 
-// Module to remove grammer (run / running == run)
+// Module to remove grammar (run / running == run)
 const lemmatizer = require("wink-lemmatizer");
 
 // Module to convert number to words
@@ -35,31 +34,31 @@ const stringSimilarity = require("string-similarity");
 const { wordsToNumbers } = require("words-to-numbers");
 
 // Reading the documents
-//Importing the IDF Array
-const IDF = require("./idf");
+// Importing the IDF Array
+const IDF = require("./src/idf");
 
 // Reading the keywords array
-const keywords = require("./keywords");
+const keywords = require("./src/keywords");
 
 // Reading the length array
-const length = require("./length");
+const length = require("./src/length");
 
-//Reading the TF Array
-let TF = require("./TF");
+// Reading the TF Array
+let TF = require("./src/TF");
 
 // Reading the titles array
-const titles = require("./titles");
+const titles = require("./src/titles");
 
 // Reading the urls array
-const urls = require("./urls");
+const urls = require("./src/urls");
 
-//total documents
+// total documents
 const N = 3023;
 
-//total keywords
+// total keywords
 const W = 27523;
 
-//average length of a document
+// average length of a document
 const avgdl = 134.16969897452861;
 
 // Function to capitalize the string
@@ -93,16 +92,16 @@ app.get("/search", (req, res) => {
 
   let queryKeywords = [];
 
-  // Seperates numbers from query string using regular expression - regex
+  // Separates numbers from query string using regular expression - regex
   let getNum = query.match(/\d+/g);
 
-  //Push all the numbers and their word form to query keywords
+  // Push all the numbers and their word form to query keywords
   if (getNum) {
     getNum.forEach((num) => {
       queryKeywords.push(num);
       let numStr = converter.toWords(Number(num));
       let numKeys = numStr.split("-");
-      queryKeywords.push(numStr); // two-hundered-thirty-four
+      queryKeywords.push(numStr); // two-hundred-thirty-four
 
       numKeys.forEach((key) => {
         let spaceSplits = key.split(" ");
@@ -115,16 +114,11 @@ app.get("/search", (req, res) => {
     });
   }
 
-  // twoSum => two sum
-
-  // twojnjgk
-  // 2
-
   for (let j = 0; j < newString.length; j++) {
     // Original Keywords
     newString[j] = newString[j].toLowerCase();
     newString[j] = removePunc(newString[j]);
-    if (newString[j] !== "") queryKeywords.push(newString[j]); // , !
+    if (newString[j] !== "") queryKeywords.push(newString[j]);
 
     // Camelcasing
     var letr = newString[j].match(/[a-zA-Z]+/g);
@@ -134,13 +128,12 @@ app.get("/search", (req, res) => {
       });
     }
 
-    //Word to Numbers
+    // Word to Numbers
     let x = wordsToNumbers(newString[j]).toString();
     if (x != newString[j]) queryKeywords.push(x);
   }
 
-  // Grammer and Spell Check
-
+  // Grammar and Spell Check
   let queryKeywordsNew = queryKeywords;
   queryKeywords.forEach((key) => {
     let key1 = key;
@@ -180,7 +173,7 @@ app.get("/search", (req, res) => {
   queryKeywords = temp;
   queryKeywords.sort();
 
-  //Getting Unique Query Keyword
+  // Getting Unique Query Keyword
   let temp1 = [];
   queryKeywords.forEach((key) => {
     if (temp1.indexOf(key) == -1) {
@@ -190,7 +183,7 @@ app.get("/search", (req, res) => {
 
   queryKeywords = temp1;
 
-  //Getting id of every query keyword
+  // Getting id of every query keyword
   let qid = [];
   queryKeywords.forEach((key) => {
     qid.push(keywords.indexOf(key));
@@ -211,7 +204,6 @@ app.get("/search", (req, res) => {
       for (let k = 0; k < TF[i].length; k++) {
         if (TF[i][k].id == key) {
           tf = TF[i][k].val / length[i];
-
           break;
         }
       }
@@ -220,7 +212,7 @@ app.get("/search", (req, res) => {
       const y = tfkey + 1.2 * (1 - 0.75 + 0.75 * (length[i] / avgdl));
       let BM25 = (x / y) * idfKey; // x/y is the tf part
 
-      //Giving Higher weightage to Leetcode and Interview bit Problems
+      // Giving Higher weightage to Leetcode and Interview bit Problems
       if (i < 2214) BM25 *= 2;
       s += BM25;
     });
@@ -235,7 +227,7 @@ app.get("/search", (req, res) => {
     arr.push({ id: i, sim: s });
   }
 
-  //Sorting According to Score
+  // Sorting According to Score
   arr.sort((a, b) => b.sim - a.sim);
 
   let response = [];
@@ -265,7 +257,7 @@ app.get("/search", (req, res) => {
 
   console.log("RESPONSE", JSON.stringify(response));
 
-  //res.locals.titles = response;
+  // res.locals.titles = response;
   setTimeout(() => {
     if (nonZero) res.json(response);
     else res.json([]);
@@ -273,13 +265,16 @@ app.get("/search", (req, res) => {
 });
 
 // GET route to question page
-
 app.get("/question/:id", (req, res) => {
   const id = Number(req.params.id);
   const str = path.join(__dirname, "Problems");
   const str1 = path.join(str, `problem_text_${id + 1}.txt`);
+
+  if (!fs.existsSync(str1)) {
+    return res.status(404).send("File not found");
+  }
+
   let text = fs.readFileSync(str1).toString();
-  // console.log(text);
   if (id <= 1773) {
     text = text.split("ListShare");
     text = text[1];
@@ -317,29 +312,9 @@ app.get("/question/:id", (req, res) => {
   res.render("question");
 });
 
-// Listining on Port
-
+// Listening on Port
 const port = process.env.PORT || 4000;
 
 app.listen(port, () => {
-  console.log("Server is runnning on port " + port);
+  console.log("Server is running on port " + port);
 });
-
-// Binary Search Tree -> ['binary', 'search', 'tree', 'orange'] -> ['binary', 'search', 'tree']
-// Keywords -> []
-// const score = [];
-// for(const document of documents) {
-// bm25
-// score.push({id: document_id, score: bm25})
-// }
-
-// O(N*W)
-// score.sort((a, b) => {
-//  return b.score-a.score;
-// })
-
-// for(let i=0; i< 10; i++){
-// console.log(document[score[i]._id]);
-//}
-//
-//

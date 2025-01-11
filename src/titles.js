@@ -1,5 +1,8 @@
 const fs = require("fs");
-const titlesstr = fs.readFileSync("problem-titles.txt").toString();
+const path = require("path");
+
+const titlesPath = path.join(__dirname, "../data/problem-titles.txt");
+const titlesstr = fs.readFileSync(titlesPath, "utf8");
 const titles = titlesstr.split("\n");
 
 module.exports = titles;
