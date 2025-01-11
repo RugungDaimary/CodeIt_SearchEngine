@@ -10,6 +10,7 @@
     "start": "nodemon app.js",
     "dev": "nodemon app.js",
     "build": "echo 'No build required'",
+    "vercel-build": "echo 'No build required'",
     "deploy": "vercel"
   },
   "author": "",
